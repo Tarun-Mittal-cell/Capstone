@@ -1,7 +1,7 @@
 from typing import Tuple
 
 from spiral import ronin
-for s in [ 'mStartCData', 'nonnegativedecimaltype', 'getUtf8Octets',
+for s in [ 'mStartCData', 'mStartDData','nonnegativedecimaltype', 'getUtf8Octets',
 'savefileas', 'nbrOfbugs']:
     print(ronin.split(s))
 
@@ -13,6 +13,11 @@ class TrieNode(object):
     def __init__(self, word: str):
         self.word = word
         self.children = []
+        self.children = []
+
+
+        self.children = []
+        self.parent = []
         # Is it the last character of the word.`
         self.word_finished = False
         # How many times this character appeared in the addition process
@@ -36,6 +41,7 @@ def add(root, word: str):
             node = child
             found_in_child = True
             break
+
     # We did not find it so add a new child
     if not found_in_child:
         new_node = TrieNode(word)
@@ -110,13 +116,13 @@ class TrieNode(object):
         self.counter = 1
 
 
+
 def add(root, word: list):
     """
     Adding a word in the trie structure
     """
     node = root
     for char in word:
-        found_in_child = False
         # Search for the character in the children of the present `node`
         for child in node.children:
             if child.char == char:
@@ -149,9 +155,11 @@ def find_prefix(root, prefix: list) -> Tuple[bool, int]:
     if not root.children:
         return False, 0
     for char in prefix:
+
         char_not_found = True
         # Search through all the children of the present `node`
         for child in node.children:
+
             if child.char == char:
                 # We found the char existing in the child.
                 char_not_found = False
@@ -172,6 +180,10 @@ if __name__ == "__main__":
     add(root, ['hack', 'Athon'])
     add(root, ['hack', 'er'])
 
+
     print(find_prefix(root, ['hack', 'Athon']))
     print(find_prefix(root, ['hack']))
     print(find_prefix(root, ['hack', 'er']))
+
+
+
