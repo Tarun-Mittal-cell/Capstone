@@ -1,48 +1,55 @@
-from os import name
-
 import numpy as np
 
-class MLP:
 
-    def _init_(self, num_inputs=3, num_hidden=[3, 5], num_outputs=2):
+class MLP(object):
+
+    def __init__(self, num_inputs=3, hidden_layers=[3, 3], num_outputs=2):
 
         self.num_inputs = num_inputs
-        self.num_hidden = num_hidden
+        self.hidden_layers = hidden_layers
         self.num_outputs = num_outputs
 
-        layers = [self.num_inputs] + self.num_hidden + [self.num_outputs]
+        # create a generic representation of the layers
+        layers = [num_inputs] + hidden_layers + [num_outputs]
 
-        # initiate random weights
-
-        self.weights = []
+        # create random connection weights for the layers
+        weights = []
         for i in range(len(layers) - 1):
             w = np.random.rand(layers[i], layers[i + 1])
-            self.weights.append(w)
+            weights.append(w)
+        self.weights = weights
 
+    def forward_propagate(self, inputs):
 
-    def forward_propogate(self, inputs):
+        # the input layer activation is just the input itself
         activations = inputs
+
+        # iterate through the network layers
         for w in self.weights:
-            # calculate the net inputs for a given layer
+            # calculate matrix multiplication between previous activation and weight matrix
             net_inputs = np.dot(activations, w)
-            #calculate the activations
-            activations = self.sigmoid(net_inputs)
+
+            # apply sigmoid activation function
+            activations = self._sigmoid(net_inputs)
+
+        # return output layer activation
         return activations
 
     def _sigmoid(self, x):
-        return 1 / (1 + np.exp(-x))
 
-if name == "_main_":
 
+        y = 1.0 / (1 + np.exp(-x))
+        return y
+
+
+if __name__ == "__main__":
+    # create a Multilayer Perceptron
     mlp = MLP()
 
+    # set random values for network's input
     inputs = np.random.rand(mlp.num_inputs)
 
-    outputs = mlp.forward_propogate(inputs)
+    # perform forward propagation
+    output = mlp.forward_propagate(inputs)
 
-    print("The network output is: {}".format(inputs))
-    print("The network output is: {}" .format(outputs))
-
-
-
-
+    print("Network activation: {}".format(output))
